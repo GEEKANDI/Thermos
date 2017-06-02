@@ -1,26 +1,35 @@
-from flask import Flask, render_template, url_for
+from datetime import datetime
+from flask import Flask, render_template, request, redirect, url_for
+
+from logging import DEBUG
 
 app = Flask(__name__)
+app.logger.setLevel(DEBUG)
+
+bookmarks = []
 
 
-class User:
-    def __init__(self, f_name, l_name):
-        self.f_name = f_name
-        self.l_name = l_name
-
-    def initials(self):
-        return '{}. {}.'.format(self.f_name[0], self.l_name[0])
+def store_bookmarks(url):
+    bookmarks.append(dict(
+        url=url,
+        user="Skux",
+        date=datetime.utcnow()
+    ))
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html', title='Passed from view',
-                           user=User('Tito', 'Thumbi'))
+    return render_template('index.html')
 
 
-@app.route('/add')
+@app.route('/add', methods=['GET', 'POST'])
 def add():
+    if request.method == "POST":
+        url = request.form['url']
+        store_bookmarks(url)
+        app.logger.debug('stored url: ' + url)
+        return redirect(url_for('index'))
     return render_template('add.html')
 
 
@@ -31,7 +40,7 @@ def page_not_found(e):
 
 @app.errorhandler(500)
 def server_error(e):
-    return render_template('500.html', 500)
+    return render_template('500.html'), 500
 
 
 if __name__ == "__main__":

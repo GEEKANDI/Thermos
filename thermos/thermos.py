@@ -1,5 +1,7 @@
 from datetime import datetime
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template,  redirect, url_for, flash
+
+from forms import BookmarkForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "#5|\x0f\xd7\xee\xe2\xc6\t\xe5\xc5Z%\x91\xc2w\xc4\xce'Y\xe0cv\x8c"
@@ -22,17 +24,19 @@ def new_bookmarks(num):
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html',new_bookmarks= new_bookmarks(5))
+    return render_template('index.html', new_bookmarks=new_bookmarks(5))
 
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
-    if request.method == "POST":
-        url = request.form['url']
+    form = BookmarkForm()   # instance of form class
+    if form.validate_on_submit():
+        url = form.url.data
+        description = form.description.data
         store_bookmarks(url)
-        flash('stored url: ' + url)
+        flash("Stored '{}' ".format(description))
         return redirect(url_for('index'))
-    return render_template('add.html')
+    return render_template('add.html', form=form)
 
 
 @app.errorhandler(404)

@@ -176,22 +176,22 @@ h1, h2, h3, h4, h5, h6{
 /* =========================================================================
         flashes style - tito
    ======================================================================== */
-.flashes ul{
-    margin:0 0;
-    background: #FFD6A3;
-    color: #000;
+    .flashes ul{
+        margin:0 0;
+        background: #FFD6A3;
+        color: #000;
 
-    list-style-type: none;
-    list-style:none;
-}
-.flashes ul{
-    background: #FFD6A3;
-    color:#000;
-}
+        list-style-type: none;
+        list-style:none;
+    }
+    .flashes ul{
+        background: #FFD6A3;
+        color:#000;
+    }
 
-article.flashes{
-    margin-bottom: 1em;
-}
+    article.flashes{
+        margin-bottom: 1em;
+    }
 
 
 /* ==========================================================================

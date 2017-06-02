@@ -15,10 +15,14 @@ def store_bookmarks(url):
     ))
 
 
+def new_bookmarks(num):
+    return sorted(bookmarks, key=lambda bm: bm['date'], reverse=True)[:num]
+
+
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('index.html',new_bookmarks= new_bookmarks(5))
 
 
 @app.route('/add', methods=['GET', 'POST'])
